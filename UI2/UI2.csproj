@@ -146,6 +146,9 @@
     <EmbeddedResource Include="Form_InputCorrectly.resx">
       <DependentUpon>Form_InputCorrectly.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_phone.resx">
+      <DependentUpon>Form_phone.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_SearchTable.resx">
       <DependentUpon>Form_SearchTable.cs</DependentUpon>
     </EmbeddedResource>

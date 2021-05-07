@@ -7,7 +7,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
-
+using UI2;
 
 namespace CameraServer
 {
@@ -44,7 +44,7 @@ namespace CameraServer
 
             txtWidth.Text = "1200";
             txtHeight.Text = "1600";
-            
+
         }
 
         List<byte> list = new List<byte>();
@@ -87,7 +87,7 @@ namespace CameraServer
 
                 throw;
             }
-            
+
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace CameraServer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnSocket_Click(object sender, EventArgs e)
+        void btnSocket_Click(object sender, EventArgs e)
         {
             var ip = tbIP.Text.Trim();
             var portStr = tbPort.Text.Trim();
@@ -106,13 +106,12 @@ namespace CameraServer
                 return;
             }
 
-            SocketHelper.Open(ip, port,richTextBox1);
+            SocketHelper.Open(ip, port, richTextBox1);
             richTextBox1.Text += "socket服务已开启  \r\n";
             btnSocket.Enabled = false;
         }
 
-
-        private void btnConfigure_Click(object sender, EventArgs e)
+        public  void takepicture()
         {
             var width = int.Parse(txtWidth.Text.Trim());
             var height = int.Parse(txtHeight.Text.Trim());
@@ -138,10 +137,43 @@ namespace CameraServer
                     richTextBox1.Text += $"发送拍照指令出现异常：{ee.Message}  \r\n";
                 }
             }
-            else 
+            else
             {
                 richTextBox1.Text += $"无设备连接  \r\n";
             }
+        }
+
+        private void btnConfigure_Click(object sender, EventArgs e)
+        {
+            /*var width = int.Parse(txtWidth.Text.Trim());
+            var height = int.Parse(txtHeight.Text.Trim());
+            var res = SocketHelper.clientConnectionItems.TryGetValue("001", out Socket socketServer);
+            if (res && socketServer != null)
+            {
+                List<byte> list = new List<byte>
+                {
+                    0x01,//拍照指令
+                    (byte)(width & 0xff),
+                    (byte)((width & 0xff00) >> 8),
+                    (byte)(height & 0xff),
+                    (byte)((height & 0xff00) >> 8)
+                };
+
+                try
+                {
+                    socketServer.Send(list.ToArray());
+                    richTextBox1.Text += "成功发送拍照指令  \r\n";
+                }
+                catch (Exception ee)
+                {
+                    richTextBox1.Text += $"发送拍照指令出现异常：{ee.Message}  \r\n";
+                }
+            }
+            else
+            {
+                richTextBox1.Text += $"无设备连接  \r\n";
+            }*/
+            takepicture();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -195,5 +227,12 @@ namespace CameraServer
                 richTextBox1.Text += $"无设备连接  \r\n";
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Program.takepicture();
+        }
+
+        
     }
 }
