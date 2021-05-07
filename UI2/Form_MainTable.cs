@@ -68,15 +68,17 @@ namespace UI2
 
         private void button4_Click(object sender, EventArgs e)
         {
+            this.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             if (Form_ConfigTable.IfPic)
             {
                 OpenFileDialog fileDialog = new OpenFileDialog();
                 fileDialog.Title = "请选择文件";
                 fileDialog.Filter = "(图片文件)|*.jpg;*.jpeg;*.png";
+                this.pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
                     folder_path.Text = fileDialog.FileName;//返回文件的完整路径   
-                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                    
 
                     if (true)
                     {
@@ -87,13 +89,17 @@ namespace UI2
                     }
                     else
                     {
-                        this.pictureBox1.Load(fileDialog.FileName);
+                        //this.pictureBox1.Load(fileDialog.FileName);
                     }
                 }
             }
             else
-            { 
-                
+            {
+                CameraServer.Form1 phone = new CameraServer.Form1();
+                phone.ShowDialog();
+                transformed_pic = Cv_PersprctiveTrans(new Mat(CameraServer.Form1.ImagePath));
+                MemoryStream f = transformed_pic.ToMemoryStream(".png");
+                this.pictureBox1.Image = Image.FromStream(f);
             }
 
 
@@ -353,11 +359,17 @@ namespace UI2
             }
 
             //准备变换需要用的点
+            //Point2f[] corners_trans = new Point2f[4];
+            //corners_trans[0] = new Point2f(0, 0);
+            //corners_trans[1] = new Point2f(1098 - 1, 0);
+            //corners_trans[2] = new Point2f(0, 596 - 1);
+            //corners_trans[3] = new Point2f(1098 - 1, 596 - 1);
+
             Point2f[] corners_trans = new Point2f[4];
             corners_trans[0] = new Point2f(0, 0);
-            corners_trans[1] = new Point2f(1098 - 1, 0);
-            corners_trans[2] = new Point2f(0, 596 - 1);
-            corners_trans[3] = new Point2f(1098 - 1, 596 - 1);
+            corners_trans[1] = new Point2f(img.Width - 1, 0);
+            corners_trans[2] = new Point2f(0, img.Height - 1);
+            corners_trans[3] = new Point2f(img.Width - 1, img.Height - 1);
 
             for (int i = 0; i < 4; i++)
             {
@@ -367,7 +379,8 @@ namespace UI2
 
             Mat transform = Cv2.GetPerspectiveTransform(corners_sorted, corners_trans);
             Mat final = new Mat();
-            Cv2.WarpPerspective(src, final, transform, new OpenCvSharp.Size(1098 * 4, 596 * 4));
+            Cv2.WarpPerspective(src, final, transform, new OpenCvSharp.Size(4 * img.Width, 4 * img.Height));
+            Cv2.ImWrite(@"D:/image/result.png", final);
             return final;
         }
 

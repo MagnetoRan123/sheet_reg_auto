@@ -61,3 +61,5 @@ D:\XD\1-dis\UI2\UI2\bin\Debug\System.Threading.Tasks.Extensions.xml
 D:\XD\1-dis\UI2\UI2\bin\Debug\Dapper.dll
 D:\XD\1-dis\UI2\UI2\bin\Debug\Dapper.xml
 D:\XD\1-dis\UI2\UI2\obj\Debug\UI2.Form_SeePicture.resources
+D:\XD\1-dis\UI2\UI2\bin\Debug\Newtonsoft.Json.dll
+D:\XD\1-dis\UI2\UI2\bin\Debug\Newtonsoft.Json.xml
